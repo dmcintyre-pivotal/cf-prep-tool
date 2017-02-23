@@ -1,9 +1,9 @@
 <?php
-require_once('Test.php');
+require_once(__DIR__.'/Test.php');
 
 class DomainTest extends Test {
     private $oDomain;
-    
+
     public function __construct($oDomain) {
         parent::__construct($oDomain->getName());
         $this->oDomain = $oDomain;

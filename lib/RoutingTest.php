@@ -1,18 +1,18 @@
 <?php
-require_once('Test.php');
+require_once(__DIR__.'/Test.php');
 
 class RoutingTest extends Test {
 
     private $sUrl;
     private $iErrorNumber = 0;
     private $sError = '';
-    
+
     public function __construct($sName, $sUrl) {
         parent::__construct($sName);
         $this->sUrl = $sUrl;
         $this->run();
     }
-    
+
     public function run() {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -30,10 +30,10 @@ class RoutingTest extends Test {
             $this->append("\n");
             $this->parse($json);
         }
-            
+
         curl_close($ch);
     }
-    
+
     public function parse($json) {
         $obj = json_decode($json);
         foreach($obj->results as $result) {

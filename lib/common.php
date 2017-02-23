@@ -1,18 +1,18 @@
 <?php
-require_once('Response.php');
-require_once('IPAddress.php');
-require_once('WildcardDomain.php');
-require_once('Test.php');
-require_once('TestSuite.php');
-require_once('DomainTest.php');
-require_once('RoutingTest.php');
-require_once('RoutingTestSuite.php');
-require_once('Settings.php');
-require_once('HTMLFormatter.php');
-require_once('TextFormatter.php');
-require_once('JSONFormatter.php');
+require_once(__DIR__.'/Response.php');
+require_once(__DIR__.'/IPAddress.php');
+require_once(__DIR__.'/WildcardDomain.php');
+require_once(__DIR__.'/Test.php');
+require_once(__DIR__.'/TestSuite.php');
+require_once(__DIR__.'/DomainTest.php');
+require_once(__DIR__.'/RoutingTest.php');
+require_once(__DIR__.'/RoutingTestSuite.php');
+require_once(__DIR__.'/Settings.php');
+require_once(__DIR__.'/HTMLFormatter.php');
+require_once(__DIR__.'/TextFormatter.php');
+require_once(__DIR__.'/JSONFormatter.php');
 
-$oEnv = new Settings('conf/settings.ini');
+$oEnv = new Settings(__DIR__.'/../conf/settings.ini');
 $oSettingsChecks = new TestSuite('settings.ini');
 $aDomains = array();
 
