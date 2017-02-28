@@ -1,7 +1,7 @@
 # cf-prep-tool
 A set of PHP scripts to help probe the networking environment prior to installing Pivotal Cloud Foundry.
 
-= Assumptions
+# Assumptions
 These scripts assume the following:
 
 1. That PCF will be deployed to a network behind at least one level of load-balancer.
@@ -13,7 +13,7 @@ The configuration file allows for two levels ("global" and "local") which would 
 
 
 
-= Installation
+# Installation
 
 1. Create a Linux VM running on the network to which the ElasticRuntime will be deployed.
 
@@ -44,35 +44,43 @@ git clone https://github.com/dmcintyre-pivotal/cf-prep-tool.git
 cd cf-prep-tool
 vi conf/vhost.conf
 ~~~~
-- Adjust the document root
+Adjust the document root
 
- 6. Install the apache configuration file (adjust paths for your system)
- ~~~~
- cp conf/vhost.conf /etc/httpd2/sites-enabled/000-default.conf
- ~~~~
+6. Install the apache configuration file (adjust paths for your system)
+~~~~
+cp conf/vhost.conf /etc/httpd2/sites-enabled/000-default.conf
+~~~~
 
- 7. Restart apache
- ~~~~
- service httpd2 restart
- ~~~~
+7. Restart apache
+~~~~
+service httpd2 restart
+~~~~
 
- 8. Edit the tool settings to match your PCF settings
- ~~~~
- vi conf/settings.ini
- ~~~~
- - There are comments for each setting
+8. Edit the tool settings to match your PCF settings
+~~~~
+vi conf/settings.ini
+~~~~
+There are comments for each setting
 
- = Usage
- There are three modes of usage, command-line, browser-app emulation and GoRouter health emulation.
+# Usage
+There are three modes of usage, app emulation accessed by a browser, command-line, and GoRouter health emulation.
 
- 1. Command-line
- The script test.php automatically runs a series of tests sendings requests to the test VM using all registered DNS wildcards (or at least, all those you have specified in settings.ini).
+1. App emulation
+The apache web-server is configured to forward all requests to the index.php script.
+This script check first that the configuration in the settings.ini file is sane, then checks the http request being served:
 
- Note that these tests will only work if the ERT network has a route (and DNS) to the load-balancer.
+* Is the name of the domain in one of the list of wildcard domains? This verifies that a forged request has not been forwarded by the load-balancers.
 
- An example run looks like this:
- ~~~~
- root@mac-vm-k16-04:/var/www/html# php test.php
+* Are the load-balancers setting headers needed by the GoRouters - X-FORWARDED-FOR and X-FORWARDED-PROTO? These tests can be disabled using the enableForwardedFor and enableForwardedPort entries in the settings.ini file.
+
+2. Command-line
+The test.php script automatically runs a series of tests sendings requests to the test VM using all registered DNS wildcards (or at least, all those you have specified in settings.ini), and using both HTTP and HTTPS.
+
+Note that these tests will only work if the ERT network has a route (and DNS) to the load-balancer.
+
+An example run looks like this:
+~~~~
+root@mac-vm-k16-04:/var/www/html# php test.php
 Test Results
 ================
 ================================================================================================
@@ -116,3 +124,10 @@ HTTPS Local System Domain test   | FAILED: Error for https://tata.sys.xyz-local.
 
 *** Some tests failed. Check the log **
 ~~~~
+
+3. GoRouter emulation
+Requests to the health endpoint on the configured port will return a 200 OK or any other status by configuring the unhealthyStatus and healthyHosts values in the settings.ini file.
+
+You should modify these settings to simulate failure of each GoRouter in turn, checking that any monitoring or alerting from the load-balancer reacts as expected to the simulated failure.
+
+You should also disable (pause) the VM entirely to check the load-balancer's reaction to total loss of connectivity.
