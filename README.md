@@ -65,7 +65,7 @@ There are comments for each setting
 # Usage
 There are three modes of usage, app emulation accessed by a browser, command-line, and GoRouter health emulation.
 
-1. App emulation
+## App emulation
 The apache web-server is configured to forward all requests to the index.php script.
 This script check first that the configuration in the settings.ini file is sane, then checks the http request being served:
 
@@ -73,7 +73,7 @@ This script check first that the configuration in the settings.ini file is sane,
 
 * Are the load-balancers setting headers needed by the GoRouters - X-FORWARDED-FOR and X-FORWARDED-PROTO? These tests can be disabled using the enableForwardedFor and enableForwardedPort entries in the settings.ini file.
 
-2. Command-line
+## Command-line
 The test.php script automatically runs a series of tests sendings requests to the test VM using all registered DNS wildcards (or at least, all those you have specified in settings.ini), and using both HTTP and HTTPS.
 
 Note that these tests will only work if the ERT network has a route (and DNS) to the load-balancer.
@@ -125,7 +125,7 @@ HTTPS Local System Domain test   | FAILED: Error for https://tata.sys.xyz-local.
 *** Some tests failed. Check the log **
 ~~~~
 
-3. GoRouter emulation
+## GoRouter emulation
 Requests to the health endpoint on the configured port will return a 200 OK or any other status by configuring the unhealthyStatus and healthyHosts values in the settings.ini file.
 
 You should modify these settings to simulate failure of each GoRouter in turn, checking that any monitoring or alerting from the load-balancer reacts as expected to the simulated failure.
