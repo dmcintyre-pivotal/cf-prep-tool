@@ -7,8 +7,8 @@ require_once('./lib/common.php');
 
 $oResponse = new Response();
 
-$aRouterIps = $oEnv->array('goRouters');
-$aHealthyHosts = $oEnv->array('healthyHosts');
+$aRouterIps = $oEnv->asArray('goRouters');
+$aHealthyHosts = $oEnv->asArray('healthyHosts');
 
 $sHost = $_SERVER['SERVER_NAME'];
 $sUri = $_SERVER['REQUEST_URI'];

@@ -16,7 +16,7 @@ class Settings {
         return $this->aEnv[$sName];
     }
     
-    public function array($sName) {
+    public function asArray($sName) {
         return explode(',', $this->aEnv[$sName]);
     }
 }

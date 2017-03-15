@@ -25,7 +25,7 @@ foreach($aDomains as $oDomain) {
     $oSettingsChecks->test(new DomainTest($oDomain));
 }
 
-$aRouterIps = $oEnv->array('goRouters');
+$aRouterIps = $oEnv->asArray('goRouters');
 
 
 $oRouterIPsCheck = $oSettingsChecks->test(new Test('Router IPs'));
