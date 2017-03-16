@@ -38,25 +38,24 @@ if(!$oSettingsChecks->failed()) {
         $oHostCheck->append('Host '.$sHost.' is not in any domain');
     }
     
-    $aHeaders = getallheaders();
     
     if($oEnv->value('enableForwardedFor')) {
         $oForwardedForCheck = $oSystemChecks->test(new Test('X-FORWARDED-FOR'));
-        if(!array_key_exists('X-FORWARDED-FOR', $aHeaders)) {
+        if(!array_key_exists('HTTP-X-FORWARDED-FOR', $_SERVER)) {
             $oForwardedForCheck->setFailed();
             $oForwardedForCheck->append('Header not set');
         } else {
-            $oForwardedForCheck->append('Set to '.$aHeaders['X-FORWARDED-FOR']);
+            $oForwardedForCheck->append('Set to '.$_SERVER['HTTP-X-FORWARDED-FOR']);
         }
     }
     
     if($oEnv->value('enableForwardedPort')) {
         $oForwardedProtoCheck = $oSystemChecks->test(new Test('X-FORWARDED-PROTO'));
-        if(!array_key_exists('X-FORWARDED-PROTO', $aHeaders)) {
+        if(!array_key_exists('HTTP-X-FORWARDED-PROTO', $_SERVER)) {
             $oForwardedProtoCheck->setFailed();
             $oForwardedProtoCheck->append('Header not set');
         } else {
-            $oForwardedProtoCheck->append('Set to '.$aHeaders['X-FORWARDED-PROTO']);
+            $oForwardedProtoCheck->append('Set to '.$_SERVER['HTTP-X-FORWARDED-PROTO']);
         }
     }
 }
